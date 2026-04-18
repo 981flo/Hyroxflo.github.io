@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HYROX Plan">
+<meta name="theme-color" content="#0a0a0a">
+<title>HYROX 4-Monats-Plan</title>
+<link rel="manifest" href="manifest.json">
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="icon-192.svg">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: #2a2a2a;
+  --accent: #d4ff00;
+  --accent2: #ff4500;
+  --text: #f2f2f2;
+  --muted: #666;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif; }
+
+/* ── SCREEN STACK ── */
+.screen { display: none; flex-direction: column; height: 100vh; height: 100dvh; }
+.screen.active { display: flex; }
+
+/* ── TOP BAR ── */
+.topbar {
+padding: calc(var(–safe-top) + 12px) 16px 12px;
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+display: flex; align-items: center; gap: 10px;
+flex-shrink: 0;
+}
+.topbar-back {
+width: 32px; height: 32px; border-radius: 50%;
+background: var(–surface2); border: none; color: var(–text);
+font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+}
+.topbar-title { font-size: 17px; font-weight: 700; letter-spacing: 0.3px; flex: 1; }
+.topbar-badge {
+font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+background: var(–accent); color: #000; letter-spacing: 0.5px; text-transform: uppercase;
+}
+
+/* ── SCROLLABLE BODY ── */
+.scroll-body {
+flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+padding-bottom: calc(var(–safe-bottom) + 16px);
+}
+
+/* ── HOME SCREEN ── */
+.home-hero {
+padding: 28px 20px 20px;
+background: linear-gradient(160deg, #111 0%, #0a0a0a 100%);
+border-bottom: 1px solid var(–border);
+}
+.hero-eyebrow {
+font-size: 11px; font-weight: 600; color: var(–accent);
+letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+}
+.hero-title {
+font-size: 38px; font-weight: 900; line-height: 1;
+letter-spacing: -1px; margin-bottom: 6px;
+}
+.hero-title span { color: var(–accent); }
+.hero-sub { font-size: 14px; color: var(–muted); margin-bottom: 20px; }
+
+.hero-stats {
+display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.hero-stat {
+background: var(–surface); border: 1px solid var(–border);
+border-radius: 12px; padding: 12px 10px; text-align: center;
+}
+.hero-stat .n { font-size: 26px; font-weight: 900; color: var(–accent); line-height: 1; }
+.hero-stat .l { font-size: 10px; color: var(–muted); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* PHASE CARDS */
+.section-label {
+padding: 16px 20px 8px;
+font-size: 12px; font-weight: 700; color: var(–muted);
+letter-spacing: 1.5px; text-transform: uppercase;
+}
+.phase-cards { display: flex; flex-direction: column; gap: 0; padding: 0 16px 16px; gap: 10px; }
+.phase-card {
+background: var(–surface); border: 1px solid var(–border);
+border-radius: 16px; overflow: hidden; cursor: pointer;
+transition: transform 0.15s, border-color 0.15s;
+-webkit-user-select: none; user-select: none;
+}
+.phase-card:active { transform: scale(0.98); }
+.phase-card-top { display: flex; align-items: center; padding: 16px; gap: 14px; }
+.phase-num {
+width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px; font-weight: 900;
+}
+.pn1 { background: rgba(33,150,243,0.15); color: #64b5f6; }
+.pn2 { background: rgba(255,152,0,0.15); color: #ffb74d; }
+.pn3 { background: rgba(244,67,54,0.15); color: #ef9a9a; }
+.pn4 { background: rgba(212,255,0,0.15); color: var(–accent); }
+.phase-card-info { flex: 1; }
+.phase-card-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
+.phase-card-sub { font-size: 13px; color: var(–muted); }
+.phase-card-arrow { color: var(–muted); font-size: 18px; }
+.phase-card-bar {
+height: 3px; background: var(–border);
+margin: 0 16px 14px;
+border-radius: 2px; overflow: hidden;
+}
+.phase-card-bar-fill { height: 100%; border-radius: 2px; }
+.pf1 { background: #64b5f6; width: 100%; }
+.pf2 { background: #ffb74d; width: 100%; }
+.pf3 { background: #ef9a9a; width: 100%; }
+.pf4 { background: var(–accent); width: 100%; }
+
+/* ── PHASE SCREEN ── */
+.phase-header-block {
+padding: 20px; background: var(–surface); border-bottom: 1px solid var(–border);
+}
+.phase-header-block .ph-label {
+font-size: 11px; font-weight: 700; color: var(–accent);
+letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
+}
+.phase-header-block .ph-title { font-size: 26px; font-weight: 900; margin-bottom: 6px; line-height: 1.1; }
+.phase-header-block .ph-desc { font-size: 13px; color: var(–muted); line-height: 1.6; margin-bottom: 14px; }
+.phase-mini-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.pms { background: var(–surface2); border: 1px solid var(–border); border-radius: 10px; padding: 8px 12px; }
+.pms .v { font-size: 18px; font-weight: 800; color: var(–text); }
+.pms .l { font-size: 10px; color: var(–muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.weeks-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+.week-card {
+background: var(–surface); border: 1px solid var(–border);
+border-radius: 14px; overflow: hidden; cursor: pointer;
+transition: transform 0.15s;
+}
+.week-card:active { transform: scale(0.98); }
+.week-card-header { display: flex; align-items: center; padding: 14px 16px; gap: 12px; }
+.week-num-badge {
+background: var(–accent); color: #000;
+font-size: 11px; font-weight: 800;
+padding: 3px 8px; border-radius: 6px;
+letter-spacing: 0.5px; flex-shrink: 0;
+}
+.week-focus-text { font-size: 14px; font-weight: 600; flex: 1; }
+.week-card-arrow { color: var(–muted); font-size: 16px; }
+.week-card-days { padding: 0 12px 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.day-pill {
+font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px;
+text-transform: uppercase; letter-spacing: 0.5px;
+cursor: pointer; transition: transform 0.1s;
+}
+.day-pill:active { transform: scale(0.95); }
+.dp-lauf { background: rgba(33,150,243,0.2); color: #64b5f6; }
+.dp-kraft { background: rgba(255,152,0,0.2); color: #ffb74d; }
+.dp-hyrox { background: rgba(212,255,0,0.15); color: #c8ef00; }
+.dp-ausdauer { background: rgba(76,175,80,0.2); color: #81c784; }
+.dp-rest { background: rgba(100,100,100,0.2); color: #888; }
+.dp-hiit { background: rgba(244,67,54,0.2); color: #ef9a9a; }
+.dp-mobility { background: rgba(156,39,176,0.2); color: #ce93d8; }
+
+/* ── DAY SCREEN ── */
+.day-hero {
+padding: 20px; border-bottom: 1px solid var(–border);
+background: var(–surface);
+}
+.day-hero .d-day {
+font-size: 11px; font-weight: 700; color: var(–muted);
+text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;
+}
+.day-hero .d-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; line-height: 1.1; }
+.day-hero-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.d-type-tag {
+font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px;
+text-transform: uppercase; letter-spacing: 0.5px;
+}
+.d-duration {
+font-size: 13px; color: var(–accent); font-weight: 700;
+background: rgba(212,255,0,0.1); padding: 4px 10px; border-radius: 8px;
+}
+
+.exercises-list { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.ex-card {
+background: var(–surface); border: 1px solid var(–border);
+border-radius: 14px; padding: 14px 16px;
+border-left: 3px solid var(–border);
+}
+.ex-card.highlight { border-left-color: var(–accent); }
+.ex-card.wod { border-left-color: var(–accent2); }
+.ex-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+.ex-name { font-size: 15px; font-weight: 700; line-height: 1.2; }
+.ex-time {
+font-size: 11px; color: var(–accent); font-weight: 700;
+background: rgba(212,255,0,0.1); padding: 3px 8px; border-radius: 6px;
+white-space: nowrap; flex-shrink: 0;
+}
+.ex-desc { font-size: 13px; color: var(–muted); line-height: 1.6; }
+
+/* Apple Fitness Tipps im Day-Screen */
+.apple-tip-inline {
+margin: 16px 16px 0;
+padding: 12px 14px;
+background: rgba(212,255,0,0.05);
+border: 1px solid rgba(212,255,0,0.15);
+border-radius: 12px;
+}
+.apple-tip-inline h4 { font-size: 13px; font-weight: 700; color: var(–accent); margin-bottom: 4px; }
+.apple-tip-inline p { font-size: 12px; color: var(–muted); line-height: 1.5; }
+
+/* ── BOTTOM NAV (optional) ── */
+.bottom-nav {
+padding: 12px 20px calc(var(–safe-bottom) + 12px);
+background: var(–surface); border-top: 1px solid var(–border);
+display: flex; gap: 12px; flex-shrink: 0;
+}
+.btn-primary {
+flex: 1; background: var(–accent); color: #000;
+font-size: 15px; font-weight: 800; border: none; border-radius: 12px;
+padding: 14px; cursor: pointer; text-align: center;
+letter-spacing: 0.3px;
+}
+.btn-secondary {
+background: var(–surface2); color: var(–text);
+font-size: 15px; font-weight: 700; border: 1px solid var(–border);
+border-radius: 12px; padding: 14px 20px; cursor: pointer; white-space: nowrap;
+}
+</style>
+
+</head>
+<body>
+
+<!-- ═══════════════ HOME SCREEN ═══════════════ -->
+
+<div class="screen active" id="screen-home">
+  <div class="scroll-body">
+
+```
+<div class="home-hero">
+  <div class="hero-eyebrow">Doubles / Mixed Doubles</div>
+  <div class="hero-title">HYROX<br><span>PLAN</span></div>
+  <div class="hero-sub">4 Monate · 5 Tage/Woche · Fortgeschritten</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">16</div><div class="l">Wochen</div></div>
+    <div class="hero-stat"><div class="n">80</div><div class="l">Sessions</div></div>
+    <div class="hero-stat"><div class="n">8</div><div class="l">Stationen</div></div>
+  </div>
+</div>
+
+
+<div class="section-label">Die 4 Phasen</div>
+<div class="phase-cards" id="phase-cards-container"></div>
+```
+
+  </div>
+</div>
+
+<!-- ═══════════════ PHASE SCREEN ═══════════════ -->
+
+<div class="screen" id="screen-phase">
+  <div class="topbar">
+    <button class="topbar-back" onclick="goHome()">←</button>
+    <div class="topbar-title" id="phase-screen-title">Phase</div>
+  </div>
+  <div class="scroll-body">
+    <div class="phase-header-block" id="phase-header-content"></div>
+    <div class="weeks-list" id="weeks-list-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ DAY SCREEN ═══════════════ -->
+
+<div class="screen" id="screen-day">
+  <div class="topbar">
+    <button class="topbar-back" id="day-back-btn" onclick="goBack()">←</button>
+    <div class="topbar-title" id="day-screen-title">Training</div>
+  </div>
+  <div class="scroll-body" id="day-content-area"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const phases = [
+  { num:1, name:"Aufbau & Grundlage", sub:"Wochen 1–4", weeks:"4", hrs:"4–5h/Wo", intensity:"60–70%", numClass:"pn1", barClass:"pf1",
+    desc:"Aufbau der aeroben Basis und Einführung aller HYROX-Stationen im Doubles-Format. Fokus auf saubere Technik, Zone-2-Läufe und Partner­koordination. Qualität vor Quantität." },
+  { num:2, name:"Kraft & Stationsarbeit", sub:"Wochen 5–8", weeks:"4", hrs:"5–6h/Wo", intensity:"70–80%", numClass:"pn2", barClass:"pf2",
+    desc:"Kraft­entwicklung für alle 8 Stationen (Ski Erg, Sled Push/Pull, Burpee Broad Jumps, Rowing, Farmers Carry, Sandbag Lunges, Wall Balls). Lauf­volumen steigt. Doubles-Übergaben trainieren." },
+  { num:3, name:"Intensität & Simulation", sub:"Wochen 9–12", weeks:"4", hrs:"6–7h/Wo", intensity:"80–90%", numClass:"pn3", barClass:"pf3",
+    desc:"Race-pace Intervalle, vollständige HYROX Race-Simulationen, Wettkampf­strategie für Doubles. Höchste Trainings­belastung des Plans." },
+  { num:4, name:"Peak & Taper", sub:"Wochen 13–16", weeks:"4", hrs:"3–5h/Wo", intensity:"50–85%", numClass:"pn4", barClass:"pf4",
+    desc:"Volumen­reduktion bei gleicher Intensität. Sharpening-Phase: kurze Race-Sims, mentale Vorbereitung, Strategie-Finetuning. Letzte Woche = komplettes Tapering." }
+];
+
+const TYPE = {
+  lauf:"Lauf", kraft:"Kraft", hyrox:"HYROX", ausdauer:"Ausdauer",
+  rest:"Erholung", hiit:"HIIT", mobility:"Mobility"
+};
+const APPLE = {
+  lauf: "Apple Watch → Workout → Laufen (Outdoor) → Ziel: Zeit/Distanz einstellen",
+  kraft: "Apple Watch → Workout → Kraft-Training oder Funktionelles Training tracken",
+  hyrox: "Apple Watch → Workout → Funktionelles Training. Herzfrequenz-Zone 3–4 anstreben (75–88% HFmax)",
+  ausdauer: "Apple Watch → Workout → Laufen (Outdoor). Zone 2 = 60–75% HFmax",
+  hiit: "Fitness+ App → HIIT-Kurs auswählen oder Apple Watch → Workout → HIIT",
+  mobility: "Fitness+ App → Yoga oder Dehnen-Kurs (10–20 Min). Ideal: Yoga für Athleten",
+  rest: "Apple Watch → Workout → Gehen (wenn aktive Erholung). Sonst kein Tracking nötig"
+};
+
+const weekPlans = {
+  1:{ focus:"Aerobe Basis + HYROX-Intro", days:[
+    { name:"Montag", type:"lauf", title:"Grundlagenausdauer-Lauf", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min lockeres Gehen, dynamische Beinkreise, Hüftöffner, Fußgelenkkreisen", time:"5 Min" },
+      { name:"Zone-2-Lauf", desc:"35 Min bei 60–70% HFmax (du solltest noch sprechen können). Gleichmäßiges Tempo, flache Route. Pace kontrollieren, nicht zu schnell!", time:"35 Min", highlight:true },
+      { name:"Cool-Down & Dehnen", desc:"5 Min Gehen, Waden 30 Sek, Hüftbeuger 30 Sek, Oberschenkel 30 Sek. Sanft stretchen", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Ganzkörper-Kraftaufbau", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Rudern leicht + Arm- und Schulterkreise, 10 Jumping Jacks", time:"5 Min" },
+      { name:"Goblet Squat", desc:"4 × 12 Wdh | Kettlebell/Kurzhantel vor Brust halten. Knie über Zehen drücken, tief in die Hocke (Oberschenkel parallel zum Boden). Pause 60 Sek", time:"12 Min", highlight:true },
+      { name:"Romanian Deadlift", desc:"4 × 10 Wdh | Hantel nah am Körper führen, Hüfte nach hinten schieben, Rücken gerade. Spannung in Hamstrings spüren. Pause 60 Sek", time:"10 Min", highlight:true },
+      { name:"Dumbbell Row", desc:"3 × 12 je Seite | Oberkörper waagerecht, Ellenbogen Richtung Decke ziehen, Schulterblatt zusammenziehen. Pause 45 Sek", time:"8 Min" },
+      { name:"Plank Hold", desc:"3 × 45 Sek | Core angespannt, Hüfte nicht durchhängen lassen, gerade Linie Kopf bis Fersen. Pause 45 Sek", time:"6 Min" },
+      { name:"Cool-Down", desc:"5 Min Stretching: Hüftbeuger, Brustöffner, Schultern je 30 Sek", time:"5 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"HYROX Station-Intro (Doubles)", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Rope Skipping oder Laufen auf der Stelle, Armkreise, Knieheben", time:"5 Min" },
+      { name:"Ski Erg – Technik", desc:"3 × 3 Min | Füße schulterbreit, Arme hoch strecken, Zug aus dem Rumpf starten (NICHT nur Arme!), gebückt nach unten ziehen. Doubles: einer trainiert, einer pausiert – abwechselnd. Pause 2 Min", time:"15 Min", highlight:true, wod:true },
+      { name:"Wall Ball Shots", desc:"3 × 15 Wdh | 6 kg Ball (Open Doubles Standard). Tiefer Squat, Ball auf Schultern, explosiv aufstehen, Ball auf Ziel werfen (9 Fuß = 2,75 m). Technik wichtiger als Tempo!", time:"10 Min", highlight:true, wod:true },
+      { name:"Farmers Carry", desc:"3 × 20 m | Kettlebells oder Kurzhanteln, aufrechte Haltung, Schultern zurück, keine Seitneigung, kleine zügige Schritte. Pause 60 Sek", time:"8 Min" },
+      { name:"Cool-Down", desc:"5 Min Rollen + Dehnen Schultern/Unterarme/Handgelenke", time:"5 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Aktive Erholung", duration:"30 Min", exercises:[
+      { name:"Spaziergang oder Radfahren", desc:"20–30 Min Zone 1 (unter 60% HFmax). Kein Leistungsdruck. Apple Watch: Workout → Gehen oder Radfahren", time:"30 Min" },
+      { name:"Foam Rolling", desc:"10 Min: Waden 60 Sek, IT-Band 60 Sek, Oberschenkel 60 Sek, Rücken 60 Sek. Langsam und gezielt", time:"10 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"Lauf + Core-Zirkel", duration:"55 Min", exercises:[
+      { name:"Warm-Up Lauf", desc:"5 Min locker einlaufen", time:"5 Min" },
+      { name:"Fahrtspiel-Lauf", desc:"30 Min: 5 Min locker / 2 Min zügig / 5 Min locker – abwechselnd. Spüren wie sich verschiedene Tempi anfühlen. Kein Leistungsdruck", time:"30 Min", highlight:true },
+      { name:"Core-Zirkel", desc:"3 Runden: 15 × Crunches + 10 × Hollow Body Rock + 20 Sek Side Plank je Seite + 12 × Superman. Pause 60 Sek zwischen Runden", time:"15 Min" },
+      { name:"Dehnen", desc:"5 Min: Piriformis, Hüftbeuger, Waden je 30 Sek", time:"5 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"HYROX Kombi-Einheit (Doubles)", duration:"70 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min: 3 Min Rowing + Jumping Jacks + Arm Swings + Ausfallschritte", time:"8 Min" },
+      { name:"Mini Race-Simulation", desc:"2 Runden: Runde 1: 1 km Lauf + Ski Erg 500 m (je 250 m p. P.) + Sled Push 2×25 m. Runde 2: 1 km Lauf + Wall Balls 30 Wdh (je 15) + Farmers Carry 2×25 m. Übergaben üben! Pause 3 Min zwischen Runden", time:"40 Min", highlight:true, wod:true },
+      { name:"Kraft-Nacharbeit", desc:"2 × 10 Bulgarian Split Squat je Bein + 2 × 12 Lateral Raises mit Kurzhanteln", time:"12 Min" },
+      { name:"Cool-Down", desc:"10 Min Stretching komplett", time:"10 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Kompletter Ruhetag", desc:"Kein Training. Optional: 10 Min sanftes Yoga oder Atemübungen über Apple Fitness+ (Meditation/Achtsamkeit). Ernährung: 1,6–2 g Protein/kg Körpergewicht", time:"—" }
+    ]}
+  ]},
+  2:{ focus:"Laufausdauer + Sled-Technik", days:[
+    { name:"Montag", type:"lauf", title:"Tempodauerlauf", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min locker + ABC-Laufschule: Kniehebelauf, Anfersen, Sidesteps je 20 m", time:"5 Min" },
+      { name:"Zone-2-Dauerlauf", desc:"40 Min konstantes Tempo, 65–70% HFmax. Atemrhythmus: 4 Schritte einatmen, 4 Schritte ausatmen. Pace stabil halten!", time:"40 Min", highlight:true },
+      { name:"Dehnen", desc:"5 Min: Waden, Oberschenkel, Hüftbeuger je 30 Sek", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Unterkörper-Kraft + Sled", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Jumping Jacks, Leg Swings, Hip Circles", time:"5 Min" },
+      { name:"Back/Goblet Squat", desc:"5 × 8 Wdh | Gewicht höher als W1. Tiefe Kniebeuge, Brust hoch, Knie außen halten. Pause 90 Sek", time:"15 Min", highlight:true },
+      { name:"Sled Push", desc:"6 × 25 m | Hüfte tief, Körper schräg nach vorne, voller Körpereinsatz. Doubles: abwechselnd. Pause 90 Sek. Falls kein Sled: Prowler oder gefüllten Rucksack schieben", time:"15 Min", highlight:true, wod:true },
+      { name:"Sled Pull", desc:"4 × 25 m | Seil über Schulter, rückwärts gehen, kurze Schritte, Rücken gerade, Hüfte tief. Pause 90 Sek", time:"10 Min", highlight:true, wod:true },
+      { name:"Glute Bridge", desc:"3 × 15 Wdh | Körpergewicht oder Langhantel auf Hüfte. Kontrolliert heben, 2 Sek oben halten", time:"8 Min" },
+      { name:"Cool-Down", desc:"7 Min Stretching", time:"7 Min" }
+    ]},
+    { name:"Mittwoch", type:"hiit", title:"HIIT + Burpee Broad Jumps", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min: Laufen + Armkreise + 5 leichte Squat Jumps", time:"5 Min" },
+      { name:"HIIT-Block", desc:"4 Runden: 40 Sek Work / 20 Sek Pause. Übungen: Jumping Jacks → Box Jumps → Mountain Climbers → High Knees. Apple Fitness+ HIIT-Kurs parallel nutzen", time:"20 Min", highlight:true },
+      { name:"Burpee Broad Jumps", desc:"4 × 8 Wdh | Burpee nach unten, beim Aufstehen explosiv weit nach vorne springen (HYROX-Bewegung!). Weite zählt. Pause 90 Sek", time:"10 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"5 Min: Brust, Schultern, Hüfte stretchen", time:"5 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Mobility & Recovery", duration:"30 Min", exercises:[
+      { name:"Mobilisierung", desc:"30 Min Mobility: Hüftöffner (Pigeon Pose 60 Sek, 90/90 je 60 Sek), Thoraxrotation (10 Wdh), Schulterkapsel-Stretching, Squat-Mobilisierung (10 × Squat hold). Apple Fitness+ → Yoga (15–20 Min Kurs)", time:"30 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"Lauf + Rowing", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min leichtes Laufen", time:"5 Min" },
+      { name:"Laufintervalle", desc:"5 × 800 m bei 75–80% HFmax. Pause: 2 Min Gehen/Joggen. Pace jede Runde gleich halten – nicht zu schnell starten!", time:"30 Min", highlight:true },
+      { name:"Rowing Machine", desc:"3 × 500 m gleichmäßiges Tempo. Technik: Beine zuerst drücken → Rumpf kippen → Arme ziehen. Splits notieren! Pause 90 Sek", time:"15 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"5 Min Stretching", time:"5 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Lange HYROX-Kombi", duration:"80 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min: 500 m Rowing + Jumping Jacks + Ausfallschritte + Schulterkreise", time:"10 Min" },
+      { name:"Race Sim – 4 Stationen", desc:"Doubles-Format: 1 km Lauf → Ski Erg 500 m (abwechselnd) → 1 km Lauf → Wall Balls 30 Wdh (je 15) → 1 km Lauf → Farmers Carry 50 m → 1 km Lauf → Rowing 500 m. Übergaben wie im Wettkampf! Pause 4 Min", time:"45 Min", highlight:true, wod:true },
+      { name:"Kraft-Finisher", desc:"2 × 10 Step-Ups je Bein + 2 × 10 Push-Ups kontrolliert", time:"10 Min" },
+      { name:"Cool-Down", desc:"10 Min Stretching + Foam Rolling", time:"10 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Ruhetag", desc:"Regeneration. Ernährung: ausreichend Protein (1,6–2 g/kg) und Kohlenhydrate für die nächste Woche auftanken", time:"—" }
+    ]}
+  ]},
+  3:{ focus:"Sandbag & Rowing-Technik", days:[
+    { name:"Montag", type:"lauf", title:"400m-Intervalle", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min lockeres Laufen + Drills", time:"5 Min" },
+      { name:"400m-Intervalle", desc:"8 × 400 m bei 80–85% HFmax. Pause: 90 Sek Gehen. Splits aufschreiben – Ziel: alle ähnlich. Baut Ermüdungsresistenz auf!", time:"30 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min locker auslaufen + Dehnen", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Oberkörper & Core", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min: Band Pull-Aparts, Schulter-Mobilisation, leichte Rows", time:"5 Min" },
+      { name:"Dumbbell/Barbell Row", desc:"4 × 10 Wdh | Schwerer als W1. Rücken gerade, Schulterblätter zusammenziehen, kontrolliert absenken (3 Sek). Pause 60 Sek", time:"10 Min", highlight:true },
+      { name:"Push Press", desc:"4 × 8 Wdh | Leichter Kniebeugeimpuls, Stange explosiv über Kopf. Core stabil halten. Pause 60 Sek", time:"10 Min", highlight:true },
+      { name:"TRX-Rows / Inverted Rows", desc:"3 × 12 Wdh | Brust zur Stange ziehen, Hüfte gerade halten", time:"8 Min" },
+      { name:"Hollow Body + Russian Twist", desc:"3 × 30 Sek Hollow Body Hold + 3 × 20 Russian Twist mit Gewicht", time:"10 Min" },
+      { name:"Cool-Down", desc:"7 Min: Schulter, Brustöffner, Unterarme", time:"7 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Sandbag Lunges + Rowing", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min: Rowing leicht + Hip Circles + Ausfallschritte", time:"5 Min" },
+      { name:"Sandbag Lunges – Technik", desc:"4 × 25 m | Sandbag (10 kg Open Doubles) auf einer Schulter oder vor Brust. Knie berührt Boden fast, aufrechter Oberkörper, kein Runterschauen. KEIN Tempo – Technik zählt! Doubles: je 25 m pro Person", time:"15 Min", highlight:true, wod:true },
+      { name:"Rowing Pace-Arbeit", desc:"4 × 500 m | Ziel: 2:00–2:15 min/500 m (anpassen je Level). Pause 2 Min. Technik: 60% Beine / 20% Rumpf / 20% Arme. Splits notieren!", time:"20 Min", highlight:true, wod:true },
+      { name:"Core-Block", desc:"3 × 15 Leg Raises + 3 × 20 Bicycle Crunches", time:"8 Min" },
+      { name:"Cool-Down", desc:"7 Min Stretching", time:"7 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Yoga & Atemarbeit", duration:"35 Min", exercises:[
+      { name:"Geführtes Yoga", desc:"25–35 Min Apple Fitness+ → Yoga für Athleten oder Yoga für Rücken & Hüfte. Bewusste Atemarbeit: 4 Sek ein, 4 Sek halten, 6 Sek aus", time:"35 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"Lauf + Stationsblock", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Laufen + Drills", time:"5 Min" },
+      { name:"Tempolauf", desc:"3 × 1 km bei 78–82% HFmax. Pause 3 Min lockeres Joggen. Pace merken – das ist deine Basis Race-Pace!", time:"20 Min", highlight:true },
+      { name:"Kombinations-Block", desc:"3 Runden: 15 × Wall Balls (6 kg) + 12 × Burpee Broad Jumps + 200 m Sandbag Carry. Pause 2 Min zwischen Runden", time:"25 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"10 Min Stretching", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Volle HYROX-Stationsarbeit", duration:"90 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min komplett", time:"10 Min" },
+      { name:"6-Stationen HYROX (Doubles)", desc:"Alle 6 Stationen im Doubles-Format: Ski Erg 500 m → Wall Balls 30 Wdh → Rowing 500 m → Farmers Carry 50 m → Sandbag Lunges 50 m → Burpee Broad Jumps 16 Wdh. Zwischen je Station: 400 m Lauf. Übergaben und Rollenteilung üben!", time:"55 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min: Foam Rolling + Dehnen komplett", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Ruhe", desc:"Optional: 15 Min Spaziergang. Viel trinken, Schlafqualität priorisieren (8h+ nach intensiver Woche)", time:"—" }
+    ]}
+  ]},
+  4:{ focus:"Deload-Woche 1 – Regeneration", days:[
+    { name:"Montag", type:"lauf", title:"Regenerationslauf", duration:"35 Min", exercises:[
+      { name:"Zone-1-Lauf", desc:"30 Min bei 55–60% HFmax. Extrem locker, kein Leistungsanspruch. Deload: Volumen 40% reduziert. Körper braucht jetzt Anpassung", time:"30 Min" },
+      { name:"Dehnen", desc:"5 Min sanftes Stretching", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Leichtes Kraft-Maintenance", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min locker", time:"5 Min" },
+      { name:"Goblet Squat + Deadlift", desc:"3 × 10 je | ~70% des normalen Gewichts. Technik-Check nutzen. Kein Leistungsdruck", time:"16 Min" },
+      { name:"Dumbbell Row + Push-Ups", desc:"3 × 10 je | Körpergefühl beobachten. Langsam und kontrolliert", time:"10 Min" },
+      { name:"Cool-Down", desc:"10 Min Stretching komplett", time:"10 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Aktive Erholung", duration:"30 Min", exercises:[
+      { name:"Schwimmen oder Radfahren", desc:"30 Min Zone 1. Gelenkschonend, lockert Beine nach intensiven Wochen", time:"30 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Mobility-Fokus", duration:"30 Min", exercises:[
+      { name:"Apple Fitness+ Yoga", desc:"30 Min Stretching/Yoga. Fokus: Hüfte, Schultern, Oberschenkel. Am meisten beanspruchte Bereiche erholen lassen", time:"30 Min" }
+    ]},
+    { name:"Freitag", type:"hyrox", title:"Technik-Auffrischung (leicht)", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min locker", time:"5 Min" },
+      { name:"Stationen-Review", desc:"Alle 8 Stationen kurz und leicht: je 5 Wdh/100 m – NUR Technikcheck, kein Tempo, kein Gewicht. Partner-Übergaben reibungslos üben", time:"25 Min" },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"ausdauer", title:"Moderate Ausdauer", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Laufen", time:"5 Min" },
+      { name:"Dauerlauf Zone 2", desc:"40 Min bei 65% HFmax. Entspannt. Abschluss der Deload-Woche. Körper hat jetzt angepasst", time:"40 Min" },
+      { name:"Dehnen", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Phase 1 abgeschlossen!", desc:"Was hat gut geklappt? Wo brauche ich mehr Technik? Ernährung und Schlaf für Phase 2 optimieren. Weiter so! 💪", time:"—" }
+    ]}
+  ]},
+  5:{ focus:"Kraft-Einstieg + Laufvolumen ↑", days:[
+    { name:"Montag", type:"lauf", title:"1km-Intervalle", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Laufen + Drills", time:"5 Min" },
+      { name:"1 km-Intervalle", desc:"5 × 1 km bei 78–82% HFmax. Pause 2:30 Min Joggen. Splits notieren und vergleichen – Basis für Race-Pace!", time:"35 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min auslaufen + Dehnen", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Beine & Posterior Chain", duration:"70 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min: Rowing 500 m + Mobility", time:"8 Min" },
+      { name:"Front/Goblet Squat", desc:"5 × 6 Wdh | Schwerpunkt Quadrizeps, Knie stabil. Gewicht steigern gegenüber Phase 1!", time:"15 Min", highlight:true },
+      { name:"Deadlift", desc:"4 × 6 Wdh | Stange nah am Körper, Rücken neutral, aus Beinen heben. Pause 2 Min", time:"14 Min", highlight:true },
+      { name:"Nordic Curl / Glute-Ham Raise", desc:"3 × 8 Wdh | Hamstrings exzentrisch – wichtig für Sled-Verletzungsprophylaxe!", time:"10 Min" },
+      { name:"Farmers Carry Heavy", desc:"4 × 30 m | Schwerere Last als Phase 1. Doubles: 30 m abwechselnd", time:"10 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min Stretching", time:"8 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Sled Kraft-Session", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min komplett", time:"8 Min" },
+      { name:"Sled Push Progression", desc:"8 × 25 m | Gewicht progressiv steigern (leicht → mittel → schwer → mittel). Tiefe Hüftposition, Explosivkraft. Doubles: Partner drückt, Partner läuft nebenher (wie im Race!)", time:"20 Min", highlight:true, wod:true },
+      { name:"Sled Pull", desc:"6 × 25 m rückwärts | Seil schulterbreit, kurze Schritte, ziehendes Bein vollständig strecken. Pause 90 Sek", time:"15 Min", highlight:true, wod:true },
+      { name:"Core-Finisher", desc:"3 × 20 Sek L-Sit + 3 × 15 Hanging Knee Raises", time:"8 Min" },
+      { name:"Cool-Down", desc:"7 Min", time:"7 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Aktive Erholung + Mobility", duration:"35 Min", exercises:[
+      { name:"Leichtes Schwimmen/Spaziergang", desc:"20 Min Zone 1", time:"20 Min" },
+      { name:"Schulter-Mobility", desc:"15 Min: Band Dislocates, Chest Stretch, Lat Stretch – Vorbereitung für Ski Erg Muskeln", time:"15 Min" }
+    ]},
+    { name:"Freitag", type:"kraft", title:"Oberkörper + Ski Erg", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Schulter-Aktivierung", time:"5 Min" },
+      { name:"Pull-Ups / Lat Pulldown", desc:"4 × 8 Wdh | Maximale Latissimus-Aktivierung, langsam absenken (3 Sek exzentrisch)", time:"12 Min", highlight:true },
+      { name:"Overhead Press", desc:"4 × 8 Wdh | Stange über Kopf, Core stabil, Arme vollständig strecken. Stärkt Ski-Erg-Muskulatur direkt!", time:"12 Min", highlight:true },
+      { name:"Ski Erg Power-Arbeit", desc:"6 × 250 m | Explosiver Zug, kurze Pause oben. Tempo: 80% Maximalleistung. Doubles: abwechselnd je 250 m. Splits notieren!", time:"18 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min Schultern/Rücken dehnen", time:"8 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"HYROX Race-Sim (6 km)", duration:"90 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min komplett", time:"10 Min" },
+      { name:"Race Sim – 6 km + 6 Stationen", desc:"6 × [1 km Lauf + 1 HYROX-Station]: Ski Erg 500 m → Sled Push 50 m → Sled Pull 50 m → Burpee Broad Jumps 16 Wdh → Rowing 500 m → Farmers Carry 50 m. Doubles: klare Stationsverteilung vorher festlegen!", time:"60 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min Foam Roll + Stretch", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Ruhe & Ernährung", desc:"Gute Mahlzeit nach intensivem Samstag. Protein (Hühnchen, Fisch, Hülsenfrüchte). Ausreichend schlafen (8h+)", time:"—" }
+    ]}
+  ]},
+  6:{ focus:"Maximalkraft + Pace-Läufe", days:[
+    { name:"Montag", type:"lauf", title:"Race-Pace Lauf", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min + Drills", time:"5 Min" },
+      { name:"Tempo-Blöcke", desc:"4 × 1,5 km bei Race-Pace (85% HFmax). Pause 3 Min Gehen. Für Open Doubles: ca. 5:30–6:00 min/km (je nach Level anpassen)", time:"35 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Maximalkraft-Tag", duration:"75 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min Mobility + leichtes Aufwärmen", time:"8 Min" },
+      { name:"Back Squat", desc:"5 × 4 Wdh | 85–90% des Maximalgewichts (1RM). Maximale Kraft. Pause 3 Min zwischen Sätzen!", time:"20 Min", highlight:true },
+      { name:"Deadlift", desc:"4 × 4 Wdh | Schwer und sauber. Gürtel optional. Pause 3 Min", time:"18 Min", highlight:true },
+      { name:"Weighted Pull-Up", desc:"4 × 5 Wdh | Gewichtsscheibe oder Weste. Pause 2 Min", time:"12 Min", highlight:true },
+      { name:"Pallof Press", desc:"3 × 12 je Seite | Rotationsstabilität für Sled und Carry-Bewegungen", time:"8 Min" },
+      { name:"Cool-Down", desc:"8 Min Stretch", time:"8 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Wall Balls + Rowing Power", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Wall Ball Challenge", desc:"5 × 20 Wdh (6 kg) | Tief in die Hocke, explosiver Abwurf, Ball exakt auf Markierung. Pause 90 Sek. Race-Doubles: 100 Wdh total aufteilen = 50 pro Person pro Satz", time:"18 Min", highlight:true, wod:true },
+      { name:"Rowing Wettkampf-Splits", desc:"4 × 500 m | Ziel: unter 2:10 min/500 m. Pause 2 Min. Atemkontrolle! Direkt danach weiter = HYROX-Realität", time:"15 Min", highlight:true, wod:true },
+      { name:"Burpee Broad Jumps Kraft", desc:"3 × 10 Wdh | Weite maximieren. Beine beim Sprung vollständig strecken", time:"8 Min" },
+      { name:"Cool-Down", desc:"6 Min", time:"6 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Yoga & Regeneration", duration:"40 Min", exercises:[
+      { name:"Apple Fitness+ Power Yoga", desc:"35–40 Min Yoga. Fokus: Hüfte öffnen, Brustwirbelsäule mobilisieren, Schultern lockern. Yoga für Kraft oder Power Yoga empfohlen", time:"40 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"6km Lauf + Sandbag", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min Laufen", time:"5 Min" },
+      { name:"6 km Dauerlauf progressiv", desc:"6 km: erste Hälfte 70%, zweite Hälfte 75% HFmax. Letzten 1 km etwas schneller. Apple Watch Distanzziel setzen", time:"35 Min", highlight:true },
+      { name:"Sandbag Lunges Progression", desc:"4 × 25 m | Leicht mehr Gewicht als W3. Lockere Schultern, Blick nach vorne", time:"14 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Full HYROX Sim (8 km)", duration:"100 Min", exercises:[
+      { name:"Warm-Up", desc:"12 Min komplett", time:"12 Min" },
+      { name:"FULL HYROX Doubles – 8 km", desc:"8 Runden [1 km Lauf + Station] RACE-Order: Ski Erg 1000 m → Sled Push 50 m → Sled Pull 50 m → Burpee Broad Jumps 16 Wdh → Rowing 1000 m → Farmers Carry 200 m → Sandbag Lunges 100 m → Wall Balls 75 Wdh. Übergaben üben, Rollenverteilung klar!", time:"70 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min Dehnen + Foam Roll", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Intensive Woche hinter dir", desc:"Körper braucht Erholung. Schlaf (8h+), Ernährung, Regeneration. Gut gemacht!", time:"—" }
+    ]}
+  ]},
+  7:{ focus:"Stationsfluss + Lauf-Kondition", days:[
+    { name:"Montag", type:"lauf", title:"Lauf-Pyramide", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min + ABC-Laufschule", time:"5 Min" },
+      { name:"Pyramiden-Intervalle", desc:"400 m → 800 m → 1200 m → 800 m → 400 m. Pause = halbe Laufzeit. Intensität: 82–87% HFmax. Trainiert Ermüdungsresistenz für Laufpassagen im HYROX!", time:"35 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min auslaufen + Stretch", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"HYROX-Kraft-Zirkel", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Kraft-Zirkel (3 Runden)", desc:"10 × Goblet Squat (20 kg) + 8 × Push Press + 10 × KB Swing + 12 × Dumbbell Row + 20 × Mountain Climbers. Pause 2 Min zwischen Runden. Flüssige Übergänge!", time:"35 Min", highlight:true },
+      { name:"Farmers Carry Heavy", desc:"4 × 40 m | Maximales Gewicht das du sauber tragen kannst. Körperhaltung perfekt!", time:"10 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Übergaben & Doubles-Strategie", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Stationsübergaben trainieren", desc:"Alle 8 Stationen mit Partner bei 50% Intensität. Fokus: reibungsloser Wechsel, keine Wartezeit, klare Kommunikation. Wer macht was? Wann wird übergeben?", time:"30 Min", highlight:true, wod:true },
+      { name:"Ski Erg High-Intensity", desc:"5 × 250 m All-Out. Pause 2 Min. Maximale Pace jetzt testen!", time:"12 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Aktive Erholung", duration:"30 Min", exercises:[
+      { name:"Spaziergang + Foam Rolling", desc:"20 Min Gehen + 10 Min Foam Roll. Mittelphase der Kraft-Phase – aktive Pause wichtig für Leistungserhalt", time:"30 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"7 km Dauerlauf", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min locker", time:"5 Min" },
+      { name:"7 km Lauf progressiv", desc:"7 km: erste 4 km 70–75%, letzte 3 km 75–80% HFmax. Apple Watch: Distanz als Ziel", time:"45 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Lauf-dominante Simulation", duration:"85 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min", time:"10 Min" },
+      { name:"Lauf-Fokus Simulation", desc:"2 Runden: 2 km Lauf + 3 Stationen (Sled Push, Wall Balls, Rowing abwechselnd). Schlüssel: Lauftempo NACH den Stationen halten! Das bestimmt dein Gesamtergebnis", time:"50 Min", highlight:true, wod:true },
+      { name:"Sandbag-Finisher", desc:"3 × 25 m Sandbag Lunges mit Race-Pace", time:"8 Min" },
+      { name:"Cool-Down", desc:"12 Min", time:"12 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Halbzeit! 🎉", desc:"Halbzeit des Trainingsplans. Nächste Woche: Deload. Gut gemacht!", time:"—" }
+    ]}
+  ]},
+  8:{ focus:"Deload 2 – Kraft-Erhalt", days:[
+    { name:"Montag", type:"lauf", title:"Leichter Lauf", duration:"35 Min", exercises:[
+      { name:"Zone-1-Lauf", desc:"30 Min sehr locker (60% HFmax). Deload-Woche: keine Intervalle, kein Leistungsanspruch. Körper erholen lassen", time:"30 Min" },
+      { name:"Dehnen", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Reduziertes Kraft-Training", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Squat + Deadlift (leicht)", desc:"3 × 6 je | 60–65% normales Gewicht. Technik-Check, kein Leistungsdruck", time:"20 Min" },
+      { name:"Pull-Ups + Push-Ups", desc:"3 × 8 je | Körpergewicht, kontrolliert. Kein Zusatzgewicht", time:"10 Min" },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Aktive Erholung", duration:"30 Min", exercises:[
+      { name:"Schwimmen oder Radfahren", desc:"30 Min Zone 1. Gelenkschonend. Lockert Beine nach intensiven Wochen", time:"30 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Yin Yoga", duration:"35 Min", exercises:[
+      { name:"Apple Fitness+ Yin Yoga", desc:"35 Min Restorative oder Yin Yoga. Lange gehaltene Positionen. Parasympathisches Nervensystem aktivieren = optimale Erholung", time:"35 Min" }
+    ]},
+    { name:"Freitag", type:"hyrox", title:"Leichte Technik", duration:"40 Min", exercises:[
+      { name:"Stationen bei 50%", desc:"30 Min: Alle Stationen kurz durchgehen, keine Intensität. Feinschliff Übergaben, Atemtechnik bei Stationen. Entspannte Atmosphäre", time:"30 Min" },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"ausdauer", title:"5 km entspannt", duration:"45 Min", exercises:[
+      { name:"5 km Dauerlauf", desc:"5 km bei 65% HFmax. Angenehmes Tempo, keine Leistung. Genießen!", time:"35 Min" },
+      { name:"Dehnen", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Phase 2 abgeschlossen! 💪", desc:"Kraft-Basis ist gelegt. Phase 3 wird die intensivste. Körper ist bereit. Los geht's!", time:"—" }
+    ]}
+  ]},
+  9:{ focus:"Race-Pace Intensität beginnt", days:[
+    { name:"Montag", type:"lauf", title:"Race-Pace Intervalle", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min + Drills", time:"8 Min" },
+      { name:"6 × 1 km Race-Pace", desc:"6 × 1 km exakt bei HYROX-Race-Pace (85–88% HFmax). Pause 90 Sek. Pace darf NICHT einbrechen – lieber langsamer beginnen! Das ist die wichtigste Lauf-Kompetenz für HYROX", time:"35 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Kraft bei Ermüdung", duration:"70 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Squat nach Laufermüdung", desc:"5 Min leichtes Laufen → sofort 4 × 8 Goblet Squat (schwer). Simuliert Kraft nach Laufpassage im HYROX. Pause 90 Sek", time:"15 Min", highlight:true },
+      { name:"Sled Push Heavy", desc:"6 × 25 m | Race-Gewicht (Damen ~+50 kg, Herren ~+102 kg Open). Pause 2 Min. Vorbereitung auf Sled-Erschöpfung!", time:"18 Min", highlight:true, wod:true },
+      { name:"Rowing nach Sled", desc:"4 × 500 m direkt nach Sled – kein Extra-Warmup. Bewusste Ermüdungssimulation. Pause 2 Min", time:"15 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Mittwoch", type:"hiit", title:"Metabolic Conditioning", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"20 Min AMRAP", desc:"So viele Runden wie möglich: 10 Burpee Broad Jumps + 15 Wall Balls (6 kg) + 200 m Lauf. Pace konstant halten, nicht sprinten! Runden zählen für Fortschrittsvergleich", time:"20 Min", highlight:true, wod:true },
+      { name:"Farmers Carry Sprint", desc:"6 × 25 m schnellstmöglich (Wettkampf-Pace). Pause 90 Sek", time:"12 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Aktive Erholung", duration:"35 Min", exercises:[
+      { name:"Radfahren + Foam Rolling", desc:"25 Min Zone 1 + 10 Min Foam Roll. Phase 3 ist intensiv – Erholung ERNST nehmen!", time:"35 Min" }
+    ]},
+    { name:"Freitag", type:"lauf", title:"8 km Dauerlauf", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"8 km progressiv", desc:"8 km: erste Hälfte 72% HFmax, zweite Hälfte 78% HFmax. Pacing-Strategie üben. Apple Watch tracken", time:"45 Min", highlight:true },
+      { name:"Cool-Down", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Full HYROX Sim (Wettkampftempo)", duration:"105 Min", exercises:[
+      { name:"Warm-Up", desc:"12 Min", time:"12 Min" },
+      { name:"FULL HYROX – 85% Race-Pace", desc:"Komplettes HYROX-Format bei 85% Wettkampftempo: 8 × [1 km Lauf + Station]. Alle Doubles-Übergaben wie im Wettkampf. ZEITMESSUNG! Splits notieren. Wichtigster Trainingstag des Plans!", time:"75 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min Foam Roll + Stretch", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag + Analyse", duration:"—", exercises:[
+      { name:"Analyse Samstag-Sim", desc:"Wo verliert ihr Zeit? Welche Station kostet am meisten? Strategie für W10 anpassen. Protokoll führen!", time:"—" }
+    ]}
+  ]},
+  10:{ focus:"Peak-Woche – maximale Belastung", days:[
+    { name:"Montag", type:"lauf", title:"3 × 2 km Race-Pace", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"3 × 2 km Race-Pace", desc:"3 × 2 km bei genauer Race-Pace. Pause 4 Min. Mentale Stärke aufbauen: Tempo auch unter Erschöpfung halten. Das ist HYROX!", time:"40 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Maximalkraft + HYROX-Zirkel", duration:"80 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min", time:"10 Min" },
+      { name:"Back Squat Peak", desc:"5 × 3 Wdh | 90–95% 1RM. Maximale Kraft. Pause 3–4 Min. Höchste Belastung des Plans!", time:"20 Min", highlight:true },
+      { name:"Deadlift Peak", desc:"4 × 3 Wdh | Schwer und sauber. Pause 3 Min", time:"16 Min", highlight:true },
+      { name:"HYROX-Zirkel", desc:"2 Runden: Sled Push 25 m + Sled Pull 25 m + Farmers Carry 40 m + 10 Wall Balls. Keine Pause innerhalb Runde, 3 Min zwischen Runden", time:"20 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Ski Erg + Rowing Race-Pace", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Ski Erg Wettkampf-Splits", desc:"2 × 1000 m Race-Pace. Pause 3 Min. Ziel: unter 4:30 min/1000 m (anpassen). Übergaben bei 500 m üben!", time:"15 Min", highlight:true, wod:true },
+      { name:"Rowing Race-Simulation", desc:"2 × 1000 m Race-Pace. Pause 3 Min. Ruhiger Catch, explosiver Drive. Ziel: unter 4:15 min/1000 m", time:"15 Min", highlight:true, wod:true },
+      { name:"Burpee Broad Jump Sprint", desc:"3 × 16 Wdh so schnell wie möglich. Pause 2 Min. Race-Tempo!", time:"10 Min" },
+      { name:"Cool-Down", desc:"7 Min", time:"7 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Mandatory Recovery", duration:"40 Min", exercises:[
+      { name:"Restorative Yoga", desc:"40 Min Apple Fitness+ Restorative Yoga. Peak-Woche: maximale Erholung am Recovery-Tag. KEIN Kraft, KEIN Cardio!", time:"40 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"9 km Dauerlauf", duration:"65 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"9 km Lauf", desc:"9 km bei 73–78% HFmax. Längster Lauf des Plans! Mentale Stärke aufbauen", time:"50 Min", highlight:true },
+      { name:"Sandbag Race-Pace", desc:"2 × 50 m Sandbag Lunges ohne Halt – Race-Tempo testen", time:"8 Min", highlight:true, wod:true }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"FULL RACE SIM – 100%", duration:"110 Min", exercises:[
+      { name:"Warm-Up (Race-Protokoll)", desc:"15 Min exakt wie am Wettkampftag: 5 Min lockeres Laufen + dynamisches Aufwärmen + 2 × kurze Stationskontakte", time:"15 Min" },
+      { name:"🏆 FULL HYROX RACE SIMULATION", desc:"Vollständig bei Wettkampf-Pace und Wettkampf-Gewichten. Zeitmessung von Anfang bis Ende! Alle Übergaben. Alle Stationen. Dies ist der wichtigste Testtag – Ergebnis bestimmt Taper-Strategie!", time:"80 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Analyse & Ruhe", duration:"—", exercises:[
+      { name:"Gesamtzeit notieren & analysieren", desc:"Welche Station kostet die meiste Zeit? Wo verliert ihr als Team? Taper beginnt jetzt – Schwachstellen noch adressieren. Sehr gut gemacht! 🔥", time:"—" }
+    ]}
+  ]},
+  11:{ focus:"Intensitätsreduktion beginnt", days:[
+    { name:"Montag", type:"lauf", title:"5 × 1 km Intervalle", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"5 × 1 km Intervalle", desc:"5 × 1 km (statt 6 wie in W9). Race-Pace. Pause 2 Min. Volumen sinkt, Intensität bleibt gleich", time:"30 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Kraft Volumen ↓", duration:"60 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Squat + Deadlift (3 Sätze)", desc:"3 × 4 Wdh je | Schweres Gewicht beibehalten, aber nur 3 statt 5 Sätze. Kraft erhalten ohne Erschöpfung", time:"20 Min", highlight:true },
+      { name:"Sled Push", desc:"4 × 25 m Race-Gewicht. Pause 2 Min", time:"12 Min", highlight:true, wod:true },
+      { name:"Core-Block", desc:"2 Runden: 15 Wall Balls + 10 Burpee Broad Jumps", time:"10 Min" },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Mittwoch", type:"hyrox", title:"Stations-Qualität", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Alle 8 Stationen – Qualitätscheck", desc:"Jede Station einmal bei Race-Pace und Race-Gewicht. Fokus: perfekte Technik, nicht maximale Wdh. Übergaben feinjustieren", time:"30 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Aktive Erholung", duration:"30 Min", exercises:[
+      { name:"Spaziergang + Foam Rolling", desc:"20 + 10 Min. Körper auf letzten Sim-Tag vorbereiten", time:"30 Min" }
+    ]},
+    { name:"Freitag", type:"ausdauer", title:"7 km Lauf (entspannt)", duration:"55 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"7 km Dauerlauf", desc:"7 km bei 70–75% HFmax. Volumen sinkt. Komfortables Tempo. Laufen genießen!", time:"42 Min", highlight:true },
+      { name:"Cool-Down", desc:"8 Min", time:"8 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Halbe Race-Sim (4 Stationen)", duration:"75 Min", exercises:[
+      { name:"Warm-Up", desc:"10 Min", time:"10 Min" },
+      { name:"Halbe HYROX Simulation", desc:"4 Runden [1 km Lauf + Station]. Erste 4 Stationen: Ski Erg → Sled Push → Sled Pull → Burpee Broad Jumps. Race-Pace. 50% Volumen von W10. Qualität über Quantität!", time:"45 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"Letzte Intensivwoche", desc:"Letzte Intensivwoche vor dem Taper. Phase 4 beginnt! Körper ist am stärksten – jetzt frisch werden lassen", time:"—" }
+    ]}
+  ]},
+  12:{ focus:"Deload 3 – Einstieg Taper", days:[
+    { name:"Montag", type:"lauf", title:"Leichter Lauf", duration:"40 Min", exercises:[
+      { name:"Leichter Dauerlauf", desc:"35 Min bei 62% HFmax. Taper beginnt. Körper erholt sich von Phase 3 – KEIN Druck!", time:"35 Min" },
+      { name:"Dehnen", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Leichte Kraft-Aktivierung", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Squat + Row + Press", desc:"2 × 6 je | 60% Gewicht. Nur Muskelaktivierung, kein Erschöpfungstraining!", time:"20 Min" },
+      { name:"Mobility + Stretching", desc:"15 Min komplett", time:"15 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Vollständige Ruhe", duration:"—", exercises:[
+      { name:"Kein Training", desc:"Essen, schlafen, Vorfreude! Race-Day Nutrition ab heute vorbereiten: Kohlenhydrate laden (Pasta, Reis, Brot)", time:"—" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Yoga + Visualisierung", duration:"35 Min", exercises:[
+      { name:"Apple Fitness+ Yoga + Mental", desc:"30 Min Yoga + 5 Min Visualisierung: Den gesamten HYROX-Ablauf mental durchgehen. Partnerübergaben, Stationsabfolge, Race-Pace. Mental vorbereiten!", time:"35 Min" }
+    ]},
+    { name:"Freitag", type:"hyrox", title:"Mini-Technik (sehr leicht)", duration:"35 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"Stationstouch 40%", desc:"Alle 8 Stationen je 2 Wdh/50 m bei 40% – nur Aktivierung und Technik-Erinnerung. Kein Schweiß! Kein Leistungsanspruch", time:"20 Min" },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Samstag", type:"lauf", title:"5 km Race-Pace Testlauf", duration:"40 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"5 km bei Race-Pace", desc:"5 km exakt bei Wettkampf-Pace. Letzter Qualitätslauf vor dem Taper. Sollte sich leicht anfühlen – gutes Zeichen für Topform!", time:"30 Min", highlight:true },
+      { name:"Cool-Down", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Phase 4 beginnt!", duration:"—", exercises:[
+      { name:"Phase 3 geschafft! 🔥", desc:"Jetzt beginnt die finale Phase. Körper ist in Bestform. Taper erlaubt alle Anpassungen zu vollenden. Die Ruhe macht dich schneller!", time:"—" }
+    ]}
+  ]},
+  13:{ focus:"Taper – Frische aufbauen", days:[
+    { name:"Montag", type:"lauf", title:"Sharpening-Intervalle", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min + Drills", time:"8 Min" },
+      { name:"4 × 800 m Race-Pace", desc:"4 × 800 m bei Race-Pace oder leicht schneller. Pause 3 Min. Weniger Volumen, gleiche Intensität. Beine sollten leicht und reaktiv sein!", time:"25 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Kraft-Aktivierung", duration:"50 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Squat + Deadlift Aktivierung", desc:"3 × 4 | Schweres Gewicht, nur 3 Sätze. Muskeln aktivieren, NICHT ermüden. Nervensystem schärfen", time:"15 Min", highlight:true },
+      { name:"HYROX-Stationsaktivierung", desc:"Je 1 kurzer Satz: Sled Push 1 × 25 m + Ski Erg 1 × 250 m + Wall Balls 1 × 10 + Rowing 1 × 250 m. Race-Pace, kurz & scharf!", time:"12 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Aktive Erholung", duration:"25 Min", exercises:[
+      { name:"Spaziergang + Dehnen", desc:"20 Min locker gehen + 10 Min Dehnen. Taper = Körper tankt auf. Kein Druck!", time:"25 Min" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Yoga + Strategie-Final", duration:"35 Min", exercises:[
+      { name:"Yoga + Doubles-Strategie", desc:"25 Min Apple Fitness+ Yoga. Danach 10 Min: Doubles-Strategie mit Partner final besprechen. Wer macht welche Station? Kommunikationssignale? Übergabe-Timing?", time:"35 Min" }
+    ]},
+    { name:"Freitag", type:"lauf", title:"Leichter Lauf", duration:"35 Min", exercises:[
+      { name:"30 Min entspannt", desc:"30 Min bei 65% HFmax. Frische Beine für Samstag-Sim. Keine Leistung", time:"30 Min" },
+      { name:"Dehnen", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Kurze Sim – 4 Stationen (100%)", duration:"70 Min", exercises:[
+      { name:"Warm-Up Race-Protokoll", desc:"12 Min exakt wie am Wettkampftag. Das Race-Day-Protokoll einprägen!", time:"12 Min" },
+      { name:"Mini Sim – 100% Race-Pace", desc:"4 Runden [1 km Lauf + Station] bei 100% Pace. Erste 4 Stationen. Soll frisch und scharf anfühlen – Zeichen für guten Taper!", time:"40 Min", highlight:true, wod:true },
+      { name:"Cool-Down", desc:"15 Min", time:"15 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"3 Wochen bis Wettkampf", desc:"Körper ist in Topform. Jetzt nur noch schärfen und frisch bleiben. Du hast alles gegeben!", time:"—" }
+    ]}
+  ]},
+  14:{ focus:"Finetuning & Race-Vorbereitung", days:[
+    { name:"Montag", type:"lauf", title:"3 × 1 km Race-Pace", duration:"40 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"3 × 1 km Race-Pace", desc:"3 × 1 km bei exakter Race-Pace. Pause 3 Min. Wenig Volumen, maximale Qualität. Beine sollten sich leicht anfühlen!", time:"20 Min", highlight:true },
+      { name:"Cool-Down", desc:"10 Min", time:"10 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Letzte Kraft-Aktivierung", duration:"45 Min", exercises:[
+      { name:"Warm-Up", desc:"8 Min", time:"8 Min" },
+      { name:"Full Body Aktivierung", desc:"2 × 5 je: Squat + Deadlift + Pull-Up + Push Press. Schweres Gewicht, wenig Volumen. Letzter richtiger Kraft-Tag!", time:"20 Min", highlight:true },
+      { name:"Stationskontakt", desc:"Jede Station einmal kurz: 5 Wdh / 50% Pace. Muscle Memory aktivieren", time:"10 Min" },
+      { name:"Cool-Down", desc:"7 Min", time:"7 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Ruhe & Logistik", duration:"—", exercises:[
+      { name:"Freier Tag", desc:"Kein Training. Race-Day Logistik planen: Anfahrt, Zeitplan, Equipment checken. Ernährung vorbereiten", time:"—" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Letzte Yoga-Einheit", duration:"30 Min", exercises:[
+      { name:"Sanftes Yoga + Visualisierung", desc:"25 Min sanftes Yoga (Apple Fitness+). Danach: Gesamten Race-Day mental visualisieren. Übergaben, Stationsabfolge, Pace. Mental bereit sein!", time:"30 Min" }
+    ]},
+    { name:"Freitag", type:"lauf", title:"Aktivierungslauf", duration:"25 Min", exercises:[
+      { name:"20 Min sehr locker", desc:"20 Min bei 60% HFmax. Nur Aktivierung. KEIN Schweiß, KEINE Erschöpfung. 5 Min Dehnen danach", time:"25 Min" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"Race-Day Warm-Up Protokoll", duration:"30 Min", exercises:[
+      { name:"Race-Day Protokoll üben", desc:"15 Min: 5 Min Laufen + alle Stationen je 3 Wdh (50%). Exakt wie am Wettkampftag machen! Danach: früh schlafen, gut essen", time:"20 Min", highlight:true },
+      { name:"Mental Prep", desc:"10 Min Dehnen + Positive Gedanken. Strategie nochmals durchdenken. Ihr seid bereit! 💪", time:"10 Min" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Ruhetag", duration:"—", exercises:[
+      { name:"2 Wochen bis Wettkampf", desc:"Equipment checken: Laufschuhe, Sportkleidung, Nummer, Race-Day Nutrition. Alles ready? ✅", time:"—" }
+    ]}
+  ]},
+  15:{ focus:"Final Taper – maximale Frische", days:[
+    { name:"Montag", type:"lauf", title:"Letzter Lauf (locker)", duration:"30 Min", exercises:[
+      { name:"25 Min sehr locker", desc:"25 Min bei 62–65% HFmax. Letzte reguläre Laufeinheit. Frische erhalten – das ist jetzt das Ziel!", time:"25 Min" },
+      { name:"Dehnen", desc:"5 Min", time:"5 Min" }
+    ]},
+    { name:"Dienstag", type:"kraft", title:"Mini-Aktivierung", duration:"30 Min", exercises:[
+      { name:"Warm-Up", desc:"5 Min", time:"5 Min" },
+      { name:"Körper-Aktivierung", desc:"2 × 5 Squat + 2 × 5 Pull-Up + 2 × 5 Push-Up. Körpergewicht oder sehr leicht. Muskeln wecken, NICHT ermüden!", time:"15 Min" },
+      { name:"Cool-Down", desc:"10 Min Stretch", time:"10 Min" }
+    ]},
+    { name:"Mittwoch", type:"rest", title:"Ruhe – Kohlenhydrate laden", duration:"—", exercises:[
+      { name:"Carb Loading beginnt", desc:"Kein Training. Kohlenhydrate hochladen: Pasta, Reis, Brot, Bananen. Viel trinken (Wasser + Elektrolyte). Früh schlafen!", time:"—" }
+    ]},
+    { name:"Donnerstag", type:"mobility", title:"Sanfte Bewegung", duration:"20 Min", exercises:[
+      { name:"Spaziergang + Dehnen", desc:"15 Min Spazieren + 5 Min sanftes Dehnen. Kein Leistungsdruck. Beine locker halten", time:"20 Min" }
+    ]},
+    { name:"Freitag", type:"rest", title:"Race-Day Eve – Ruhe", duration:"—", exercises:[
+      { name:"Komplette Ruhe", desc:"Falls Wettkampf morgen: Heute kohlenhydratreich essen (früh Abendessen!), gut schlafen (22:00 Uhr). Equipment und Ernährung für morgen packen. Vertrau dem Training! 🔥", time:"—" }
+    ]},
+    { name:"Samstag", type:"hyrox", title:"🏆 RACE DAY WARM-UP", duration:"20 Min", exercises:[
+      { name:"Race-Day Warm-Up", desc:"20 Min: 5 Min lockeres Laufen + Dynamische Drills + Alle Stationen 1–2 Wdh sehr leicht. KEIN Schweiß, KEINE Erschöpfung vor dem Start. Dann: GO! Ihr habt 4 Monate gearbeitet. Zeigt was ihr könnt! 🔥", time:"20 Min", highlight:true, wod:true }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Post-Race 🎉", duration:"—", exercises:[
+      { name:"Herzlichen Glückwunsch! 🏆", desc:"Iss gut, trink viel, ruh dich aus. Stolz sein auf 4 Monate harte Arbeit. Du bist ein HYROX-Athlet! Nächstes Ziel setzen? 💪", time:"—" }
+    ]}
+  ]},
+  16:{ focus:"Recovery – Post-Race", days:[
+    { name:"Montag", type:"rest", title:"Post-Race Regeneration", duration:"—", exercises:[
+      { name:"Aktive Erholung", desc:"Leichtes Gehen 20 Min. Viel essen und schlafen. Entzündungshemmend: Obst, Gemüse, Lachs, Nüsse, Ingwertee", time:"—" }
+    ]},
+    { name:"Dienstag", type:"rest", title:"Regeneration", duration:"—", exercises:[
+      { name:"Foam Rolling + Dehnen", desc:"20 Min sanftes Foam Rolling und Stretching. Kein Training. Muskeln erholen sich noch", time:"—" }
+    ]},
+    { name:"Mittwoch", type:"mobility", title:"Yoga Erholung", duration:"30 Min", exercises:[
+      { name:"Restorative Yoga", desc:"30 Min Apple Fitness+ Restorative Yoga. Körper nach dem Wettkampf erholen. Sanft und regenerativ", time:"30 Min" }
+    ]},
+    { name:"Donnerstag", type:"rest", title:"Ruhe", duration:"—", exercises:[
+      { name:"Du hast es geschafft!", desc:"Genieße die Erholung. Wenn du weiter trainieren möchtest: Neuer Zyklus beginnt nächste Woche. Nächste HYROX? 🏆", time:"—" }
+    ]},
+    { name:"Freitag", type:"lauf", title:"Comeback-Lauf", duration:"30 Min", exercises:[
+      { name:"Sanfter Lauf 25 Min", desc:"25 Min bei 60% HFmax. Einfach laufen, Spaß haben, keine Struktur. Körper freut sich über Bewegung", time:"25 Min" }
+    ]},
+    { name:"Samstag", type:"rest", title:"Wochenende", duration:"—", exercises:[
+      { name:"Entspannen & feiern", desc:"Wochenende genießen. Nächstes HYROX-Ziel setzen? Vielleicht Pro-Kategorie? 😎", time:"—" }
+    ]},
+    { name:"Sonntag", type:"rest", title:"Abschluss", duration:"—", exercises:[
+      { name:"4 Monate erfolgreich abgeschlossen 🏆", desc:"Du bist ein HYROX-Athlet. Auf das nächste Ziel!", time:"—" }
+    ]}
+  ]}
+};
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+let currentPhase = null;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() { showScreen('home'); }
+
+function goBack() {
+  if (currentPhase) {
+    renderPhaseScreen(currentPhase);
+    showScreen('phase');
+  } else {
+    showScreen('home');
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER HOME
+// ═══════════════════════════════════════
+function renderHome() {
+  const container = document.getElementById('phase-cards-container');
+  container.innerHTML = phases.map(p => `
+    <div class="phase-card" onclick="openPhase(${p.num})">
+      <div class="phase-card-top">
+        <div class="phase-num ${p.numClass}">${p.num}</div>
+        <div class="phase-card-info">
+          <div class="phase-card-name">${p.name}</div>
+          <div class="phase-card-sub">${p.sub} · ${p.hrs} · ${p.intensity}</div>
+        </div>
+        <div class="phase-card-arrow">›</div>
+      </div>
+      <div class="phase-card-bar"><div class="phase-card-bar-fill ${p.barClass}"></div></div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════
+// RENDER PHASE
+// ═══════════════════════════════════════
+function openPhase(num) {
+  currentPhase = num;
+  renderPhaseScreen(num);
+  showScreen('phase');
+}
+
+function renderPhaseScreen(num) {
+  const p = phases[num - 1];
+  document.getElementById('phase-screen-title').textContent = `Phase ${num}`;
+
+  document.getElementById('phase-header-content').innerHTML = `
+    <div class="ph-label">Phase ${p.num} · ${p.sub}</div>
+    <div class="ph-title">${p.name}</div>
+    <div class="ph-desc">${p.desc}</div>
+    <div class="phase-mini-stats">
+      <div class="pms"><div class="v">${p.weeks}</div><div class="l">Wochen</div></div>
+      <div class="pms"><div class="v">${p.hrs}</div><div class="l">Training</div></div>
+      <div class="pms"><div class="v">${p.intensity}</div><div class="l">Intensität</div></div>
+    </div>
+  `;
+
+  const startWeek = (num - 1) * 4 + 1;
+  const weeksHTML = Array.from({length:4}, (_, i) => {
+    const wNum = startWeek + i;
+    const plan = weekPlans[wNum];
+    if (!plan) return '';
+    const pillsHTML = plan.days.map(d =>
+      `<div class="day-pill dp-${d.type}" onclick="event.stopPropagation(); openDay(${wNum}, ${plan.days.indexOf(d)})">${d.name.slice(0,2)}</div>`
+    ).join('');
+    return `
+      <div class="week-card" onclick="openWeekDays(${wNum})">
+        <div class="week-card-header">
+          <div class="week-num-badge">W${wNum}</div>
+          <div class="week-focus-text">${plan.focus}</div>
+          <div class="week-card-arrow">›</div>
+        </div>
+        <div class="week-card-days">${pillsHTML}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('weeks-list-content').innerHTML = weeksHTML;
+}
+
+// ═══════════════════════════════════════
+// RENDER WEEK
+// ═══════════════════════════════════════
+function openWeekDays(wNum) {
+  const plan = weekPlans[wNum];
+  if (!plan) return;
+
+  const phaseNum = Math.ceil(wNum / 4);
+  currentPhase = phaseNum;
+
+  document.getElementById('phase-screen-title').textContent = `Woche ${wNum}`;
+  document.getElementById('phase-header-content').innerHTML = `
+    <div class="ph-label">Phase ${phaseNum} · Woche ${wNum}</div>
+    <div class="ph-title">${plan.focus}</div>
+    <div class="ph-desc">Tippe auf einen Tag für die vollständige Trainingseinheit mit allen Übungen und Anweisungen.</div>
+  `;
+
+  const daysHTML = plan.days.map((day, idx) => {
+    const totalMins = day.duration !== '—' ? day.duration : null;
+    return `
+      <div class="week-card" onclick="openDay(${wNum}, ${idx})">
+        <div class="week-card-header">
+          <div class="day-pill dp-${day.type}" style="pointer-events:none">${day.name.slice(0,2)}</div>
+          <div style="flex:1">
+            <div class="week-focus-text">${day.name}: ${day.title}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">${TYPE[day.type]}${totalMins ? ' · ' + totalMins : ''}</div>
+          </div>
+          <div class="week-card-arrow">›</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('weeks-list-content').innerHTML = daysHTML;
+  showScreen('phase');
+}
+
+// ═══════════════════════════════════════
+// RENDER DAY
+// ═══════════════════════════════════════
+function openDay(wNum, dayIdx) {
+  const plan = weekPlans[wNum];
+  const day = plan.days[dayIdx];
+  if (!day) return;
+
+  currentPhase = Math.ceil(wNum / 4);
+  document.getElementById('day-screen-title').textContent = day.name;
+
+  const appleTip = APPLE[day.type] || '';
+
+  const exHTML = day.exercises.map(ex => `
+    <div class="ex-card ${ex.highlight ? 'highlight' : ''} ${ex.wod ? 'wod' : ''}">
+      <div class="ex-card-top">
+        <div class="ex-name">${ex.name}</div>
+        ${ex.time !== '—' ? `<div class="ex-time">⏱ ${ex.time}</div>` : ''}
+      </div>
+      <div class="ex-desc">${ex.desc}</div>
+    </div>
+  `).join('');
+
+  const legende = day.exercises.some(e => e.highlight) || day.exercises.some(e => e.wod) ? `
+    <div style="padding:0 16px;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+      ${day.exercises.some(e => e.highlight) ? '<div style="font-size:11px;color:var(--accent);">● Kern-Übung</div>' : ''}
+      ${day.exercises.some(e => e.wod) ? '<div style="font-size:11px;color:var(--accent2);">● HYROX-Station</div>' : ''}
+    </div>` : '';
+
+  document.getElementById('day-content-area').innerHTML = `
+    <div class="day-hero">
+      <div class="d-day">Woche ${wNum} · ${day.name}</div>
+      <div class="d-title">${day.title}</div>
+      <div class="day-hero-row">
+        <div class="d-type-tag dp-${day.type}" style="background:transparent;border:1px solid;font-size:12px;padding:4px 10px;border-radius:8px">${TYPE[day.type]}</div>
+        ${day.duration !== '—' ? `<div class="d-duration">⏱ ${day.duration}</div>` : ''}
+      </div>
+    </div>
+    ${appleTip ? `<div class="apple-tip-inline"><h4>🍎 Apple Fitness+</h4><p>${appleTip}</p></div>` : ''}
+    ${legende}
+    <div class="exercises-list">${exHTML}</div>
+    <div style="height:20px"></div>
+  `;
+
+  showScreen('day');
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+renderHome();
+
+// Register service worker for offline use
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+
+</body>
+</html>
